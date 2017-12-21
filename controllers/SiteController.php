@@ -9,9 +9,31 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\EntryForm;
 
 class SiteController extends Controller
 {
+	public function actionSay($message = 'Привет')
+    {
+        return $this->render('say', ['message' => $message]);
+    }
+	
+	public function actionEntry()
+    {
+        $model = new EntryForm();
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            // данные в $model удачно проверены
+
+            // делаем что-то полезное с $model ...
+ 
+            return $this->render('entry-confirm', ['model' => $model]);
+        } else {
+            // либо страница отображается первый раз, либо есть ошибка в данных
+            return $this->render('entry', ['model' => $model]);
+        }
+    }
+	
     /**
      * @inheritdoc
      */
@@ -123,4 +145,5 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+
 }
